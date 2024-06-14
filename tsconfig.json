@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "lib": ["es5", "es6"],
+    "target": "ES2017",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  }
+}
+
+// {
+//   "compilerOptions": {
+//     "target": "ES2020", // Specifies what version of ECMAScript the code should be compiled to.
+//     "module": "NodeNext", // Specifies what module code should be generated.
+//     "moduleResolution": "NodeNext", // Specifies how TypeScript should resolve module imports.
+//     "sourceMap": true,
+//     "outDir": "./dist", // Redirect output structure to the directory.
+//     "strict": true, // Enable all strict type-checking options.
+//     "esModuleInterop": true, // This will allow you to use default imports with CommonJS modules.
+//     "emitDecoratorMetadata": true,
+//     "experimentalDecorators": true
+//   },
+//   "include": ["src/**/*"] // Specifies which files to include when compiling your project.
+// }
