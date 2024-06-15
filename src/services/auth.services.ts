@@ -39,8 +39,7 @@ export default class AuthService {
         },
       });
     } catch (error) {
-      console.log(error);
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -67,7 +66,7 @@ export default class AuthService {
 
       return user;
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 }

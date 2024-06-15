@@ -20,19 +20,14 @@ export default class AuthController {
       const accessToken = generateToken(user);
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
+        sameSite: "strict",
         path: "/",
       });
 
-      // refresh token
-      // const refreshToken = generateRefreshToken(user);
-      // res.cookie("refreshToken", refreshToken, {
-      //   httpOnly: true,
-      //   secure: true,
-      //   path: "/",
-      // });
-
-      res.status(200).json({ message: "User logged in successfully", user });
+      res
+        .status(200)
+        .json({ message: "User logged in successfully", user, accessToken });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
