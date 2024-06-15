@@ -45,4 +45,15 @@ export default class AuthController {
       res.status(500).json({ message: error.message });
     }
   }
+
+  public static async checkAuth(req: Request, res: Response) {
+    // Check if user is authenticated
+    try {
+      res.json(res.locals.user);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).json({ message: error.message });
+      }
+    }
+  }
 }

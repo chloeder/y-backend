@@ -2,11 +2,13 @@ import jwt from "jsonwebtoken";
 type Payload = {
   id: string;
   username: string;
+  password: string;
   email: string;
   fullName: string;
 };
 
 export const generateToken = (payload: Payload) => {
+  delete payload.password;
   const token = jwt.sign(payload, process.env.JWT_SECRET!, {
     expiresIn: "1d",
   });
