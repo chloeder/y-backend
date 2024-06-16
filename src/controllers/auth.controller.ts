@@ -18,14 +18,14 @@ export default class AuthController {
 
       // access token
       const accessToken = generateToken(user);
-      res.cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "strict",
-        path: "/",
-      });
 
       res
+        .cookie("accessToken", accessToken, {
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+          maxAge: 1000 * 60 * 60 * 24, // 1 day
+        })
         .status(200)
         .json({ message: "User logged in successfully", user, accessToken });
     } catch (error) {

@@ -49,6 +49,9 @@ export default class ThreadService {
           likes: true,
           replies: true,
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
 
       const threadsWithLikeStatus = threads.map((thread) => {
