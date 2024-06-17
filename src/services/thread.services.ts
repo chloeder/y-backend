@@ -1,7 +1,7 @@
 import { prisma } from "../../db/prisma";
 import { threadSchema } from "../../validators/thread.validators";
 import { CreateThreadDto, UpdateThreadDto } from "../dtos/thread.dto";
-import { cloudinaryUpload } from "../utils/cloudinaryHandler";
+import { cloudinaryDelete, cloudinaryUpload } from "../utils/cloudinaryHandler";
 
 export default class ThreadService {
   static async createThread(dto: CreateThreadDto, userId: string) {
@@ -79,18 +79,23 @@ export default class ThreadService {
       });
       if (!thread) throw new Error("Thread not found");
 
-      // Cloudinary upload
-      const cloudinaryImage = dto.image
-        ? await cloudinaryUpload(dto.image)
-        : null;
-
+      if (dto.image) {
+        if (thread.image) {
+          // Cloudinary delete
+          await cloudinaryDelete(thread.image);
+        }
+        // Cloudinary upload
+        const cloudinaryImage = dto.image
+          ? await cloudinaryUpload(dto.image)
+          : null;
+        dto.image = cloudinaryImage?.secure_url;
+      }
       return await prisma.thread.update({
         where: {
           id,
         },
         data: {
           ...dto,
-          image: cloudinaryImage?.secure_url,
         },
       });
     } catch (error) {
@@ -152,6 +157,97 @@ export default class ThreadService {
       return threadWithLikeStatus;
     } catch (error) {
       throw new Error(error);
+    }
+  }
+
+  static async getLikedThread(userId: string) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+      if (!user) throw new Error("User not found");
+
+      const likedThread = await prisma.like.findMany({
+        where: {
+          userId,
+        },
+        select: {
+          thread: {
+            select: {
+              id: true,
+              content: true,
+              image: true,
+              users: {
+                select: {
+                  id: true,
+                  username: true,
+                  fullName: true,
+                  photoProfile: true,
+                },
+              },
+              createdAt: true,
+              likes: true,
+              replies: true,
+            },
+          },
+        },
+      });
+
+      return likedThread.map((thread) => {
+        return {
+          ...thread.thread,
+          likes: thread.thread.likes.length,
+          replies: thread.thread.replies.length,
+          isLiked: thread.thread.likes.some((like) => like.userId === userId),
+        };
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  static async getFollowingThread(userId: string) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          followings: true,
+        },
+      });
+      if (!user) throw new Error("User not found");
+
+      return await prisma.thread.findMany({
+        where: {
+          userId: {
+            in: user.followings.map((following) => following.id),
+          },
+        },
+        select: {
+          id: true,
+          content: true,
+          image: true,
+          users: {
+            select: {
+              id: true,
+              username: true,
+              fullName: true,
+              photoProfile: true,
+            },
+          },
+          createdAt: true,
+          likes: true,
+          replies: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    } catch (error) {
+      throw error;
     }
   }
 }

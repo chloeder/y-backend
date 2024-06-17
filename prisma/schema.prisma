@@ -8,72 +8,83 @@ datasource db {
 }
 
 model User {
-  id                                 String   @id @default(uuid())
-  username                           String   @unique
-  fullName                           String
-  email                              String   @unique
-  password                           String
-  photoProfile                       String?
-  bio                                String?
-  createdAt                          DateTime @default(now())
-  updatedAt                          DateTime @default(now()) @updatedAt
-  follows_follows_followerIdTousers  Follow[] @relation("follows_followerIdTousers")
-  follows_follows_followingIdTousers Follow[] @relation("follows_followingIdTousers")
-  likes                              Like[]
-  replies                            Reply[]
-  threads                            Thread[]
+  id           String   @id @default(uuid())
+  username     String   @unique
+  fullName     String
+  email        String   @unique
+  password     String
+  photoProfile String?
+  coverImage   String?
+  bio          String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  followers  Follow[] @relation("Followers")
+  followings Follow[] @relation("Following")
+  likes      Like[]
+  replies    Reply[]
+  threads    Thread[]
 
   @@map("users")
 }
 
 model Thread {
   id        String   @id @default(uuid())
-  userId    String
   content   String
   image     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  likes     Like[]
-  replies   Reply[]
-  users     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  likes   Like[]
+  replies Reply[]
+
+  userId String
+  users  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("threads")
 }
 
 model Reply {
   id        String   @id @default(uuid())
-  userId    String
-  threadId  String
   content   String
   image     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  thread    Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
-  users     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userId String
+  users  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  threadId String
+  thread   Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)
 
   @@map("replies")
 }
 
 model Like {
   id        String   @id @default(uuid())
-  userId    String
-  threadId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  thread    Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
-  users     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  threadId String
+  thread   Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+
+  userId String
+  users  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("likes")
 }
 
 model Follow {
-  id                               String   @id @default(uuid())
-  followingId                      String
-  followerId                       String
-  createdAt                        DateTime @default(now())
-  updatedAt                        DateTime @default(now()) @updatedAt
-  users_follows_followerIdTousers  User     @relation("follows_followerIdTousers", fields: [followerId], references: [id], onDelete: Cascade)
-  users_follows_followingIdTousers User     @relation("follows_followingIdTousers", fields: [followingId], references: [id], onDelete: Cascade)
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  targetId String
+  target   User   @relation(fields: [targetId], references: [id], name: "Followers")
+
+  followerId String
+  follower   User   @relation(fields: [followerId], references: [id], name: "Following")
 
   @@map("follows")
 }

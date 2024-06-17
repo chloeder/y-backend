@@ -11,3 +11,13 @@ export async function cloudinaryUpload(imagePath: string) {
     upload_preset: "circleapp",
   });
 }
+
+export async function cloudinaryDelete(publicId: string) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+
+  return await cloudinary.uploader.destroy(publicId);
+}
