@@ -67,6 +67,9 @@ export default class ReplyService {
             },
           },
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
     } catch (error) {
       throw error;

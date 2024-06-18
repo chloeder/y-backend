@@ -43,7 +43,7 @@ export default class UserController {
         coverImage: req.files["coverImage"]?.[0]?.path,
       };
 
-      const data = await UserService.updateProfile(body, req.params.id);
+      const data = await UserService.updateProfile(body, res.locals.user.id);
       res.status(200).json({ message: "Update Profile", data });
     } catch (error) {
       res.status(500).json({ message: error.message });
