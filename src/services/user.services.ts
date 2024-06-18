@@ -40,6 +40,12 @@ export default class UserService {
 
       const users = await prisma.user.findMany({
         where: { id: { not: userId } },
+        select: {
+          id: true,
+          fullName: true,
+          username: true,
+          photoProfile: true,
+        },
         take: 5,
       });
 

@@ -122,7 +122,7 @@ export default class ThreadService {
     }
   }
 
-  static async getThreadById(id: string) {
+  static async getThreadById(id: string, userId: string) {
     try {
       const thread = await prisma.thread.findUnique({
         where: {
@@ -151,7 +151,7 @@ export default class ThreadService {
         ...thread,
         likes: thread.likes.length,
         replies: thread.replies.length,
-        isLiked: thread.likes.some((like) => like.userId === id),
+        isLiked: thread.likes.some((like) => like.userId === userId),
       };
       return threadWithLikeStatus;
     } catch (error) {

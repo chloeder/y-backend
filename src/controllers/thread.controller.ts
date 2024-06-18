@@ -51,7 +51,10 @@ export default class ThreadController {
 
   static async getThreadById(req: Request, res: Response) {
     try {
-      const thread = await ThreadService.getThreadById(req.params.id);
+      const thread = await ThreadService.getThreadById(
+        req.params.id,
+        res.locals.user.id
+      );
       res.status(200).json(thread);
     } catch (error) {
       res.status(500).json({ message: error.message });

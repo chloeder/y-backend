@@ -16,8 +16,8 @@ export default class UserController {
   static async getSuggestedUsers(req: Request, res: Response) {
     try {
       const userId = res.locals.user.id;
-      const suggestedUsers = await UserService.getSuggestedUsers(userId);
-      res.status(200).json({ message: "Get Suggested Users", suggestedUsers });
+      const data = await UserService.getSuggestedUsers(userId);
+      res.status(200).json({ message: "Get Suggested Users", data });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
