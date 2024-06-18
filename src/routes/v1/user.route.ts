@@ -5,6 +5,9 @@ import { upload } from "../../middlewares/upload";
 
 const router = Router();
 
+router.route("/").get(authenticate, UserController.getUsers);
+router.route("/followers").get(authenticate, UserController.getUserFollowers);
+router.route("/followings").get(authenticate, UserController.getUserFollowings);
 router.route("/profile/:username").get(authenticate, UserController.getProfile);
 router.route("/suggested").get(authenticate, UserController.getSuggestedUsers);
 router

@@ -63,6 +63,30 @@ export default class UserService {
     }
   }
 
+  static async getUsers(search: string) {
+    try {
+      if (!search) throw new Error("Search query is required");
+
+      return await prisma.user.findMany({
+        where: {
+          username: {
+            contains: search,
+            mode: "insensitive",
+          },
+        },
+        select: {
+          id: true,
+          fullName: true,
+          username: true,
+          photoProfile: true,
+          bio: true,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async updateProfile(dto: UserProfileDto, userId: string) {
     try {
       const userValidate = updateProfileSchema.validate(dto);
@@ -98,6 +122,74 @@ export default class UserService {
         data: {
           ...dto,
         },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getUserFollowers(userId: string) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          followers: {
+            select: {
+              follower: {
+                select: {
+                  id: true,
+                  fullName: true,
+                  username: true,
+                  photoProfile: true,
+                },
+              },
+            },
+          },
+          followings: true,
+        },
+      });
+
+      return user.followers.map((follower) => {
+        return {
+          ...follower.follower,
+          isFollowing: user.followings.some(
+            (following) => following.targetId === follower.follower.id
+          ),
+        };
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getUserFollowings(userId: string) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          followings: {
+            select: {
+              target: {
+                select: {
+                  id: true,
+                  fullName: true,
+                  username: true,
+                  photoProfile: true,
+                },
+              },
+            },
+          },
+          followers: true,
+        },
+      });
+
+      return user.followings.map((following) => {
+        return {
+          ...following,
+          isFollowing: user.followers.some(
+            (follower) => follower.followerId === following.target.id
+          ),
+        };
       });
     } catch (error) {
       throw error;
