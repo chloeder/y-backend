@@ -24,8 +24,7 @@ export default class ThreadService {
         },
       });
     } catch (error) {
-      console.log(error);
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -65,7 +64,7 @@ export default class ThreadService {
 
       return threadsWithLikeStatus;
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -99,7 +98,7 @@ export default class ThreadService {
         },
       });
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -119,7 +118,7 @@ export default class ThreadService {
         },
       });
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -156,7 +155,7 @@ export default class ThreadService {
       };
       return threadWithLikeStatus;
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -204,7 +203,7 @@ export default class ThreadService {
         };
       });
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 

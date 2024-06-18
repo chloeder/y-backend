@@ -37,23 +37,20 @@ export default class UserService {
         where: { id: userId },
         select: { followings: true },
       });
-      console.log("usersFollowedByMe", usersFollowedByMe);
 
       const users = await prisma.user.findMany({
         where: { id: { not: userId } },
         take: 5,
       });
-      console.log("users", users);
 
       const filteredUsers = users.filter((user) => {
         return !usersFollowedByMe.followings.some(
           (following) => following.id === user.id
         );
       });
-      console.log("filteredUsers", filteredUsers);
 
       const suggestedUsers = filteredUsers.slice(0, 4);
-      console.log("suggest user", suggestedUsers);
+
       return suggestedUsers;
     } catch (error) {
       throw error;

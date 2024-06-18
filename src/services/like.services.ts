@@ -3,6 +3,20 @@ import { prisma } from "../../db/prisma";
 export default class LikeService {
   static async likeUnlikeThread(threadId: string, userId: string) {
     try {
+      const threadExists = await prisma.thread.findUnique({
+        where: {
+          id: threadId,
+        },
+      });
+      if (!threadExists) throw new Error("Thread not found");
+
+      const userExists = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+      if (!userExists) throw new Error("User not found");
+
       const thread = await prisma.thread.findUnique({
         where: {
           id: threadId,
@@ -31,7 +45,7 @@ export default class LikeService {
         return "Liked Thread successfully";
       }
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 }

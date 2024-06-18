@@ -10,6 +10,20 @@ export default class ReplyService {
     threadId: string
   ) {
     try {
+      const thread = await prisma.thread.findUnique({
+        where: {
+          id: threadId,
+        },
+      });
+      if (!thread) throw new Error("Thread not found");
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+      if (!user) throw new Error("User not found");
+
       const replyData = replySchema.validate(dto);
       if (replyData.error) throw new Error(replyData.error.message);
 
@@ -27,12 +41,19 @@ export default class ReplyService {
         },
       });
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
   static async getReplies(threadId: string) {
     try {
+      const thread = await prisma.thread.findUnique({
+        where: {
+          id: threadId,
+        },
+      });
+      if (!thread) throw new Error("Thread not found");
+
       return await prisma.reply.findMany({
         where: {
           threadId,
@@ -48,7 +69,7 @@ export default class ReplyService {
         },
       });
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 }

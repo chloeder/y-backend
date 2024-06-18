@@ -14,7 +14,7 @@ export default class ThreadController {
       await ThreadService.createThread(body, res.locals.user.id);
       res.status(201).json({ message: "Thread created successfully" });
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -23,7 +23,7 @@ export default class ThreadController {
       const threads = await ThreadService.getThread(res.locals.user.id);
       res.status(200).json(threads);
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -36,7 +36,7 @@ export default class ThreadController {
       const thread = await ThreadService.updateThread(body, req.params.id);
       res.status(200).json({ message: "Thread updated successfully", thread });
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -45,7 +45,7 @@ export default class ThreadController {
       await ThreadService.deleteThread(req.params.id);
       res.status(200).json({ message: "Thread deleted successfully" });
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -54,7 +54,7 @@ export default class ThreadController {
       const thread = await ThreadService.getThreadById(req.params.id);
       res.status(200).json(thread);
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -63,7 +63,7 @@ export default class ThreadController {
       const data = await ThreadService.getLikedThread(req.params.id);
       res.status(200).json(data);
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -72,7 +72,7 @@ export default class ThreadController {
       const data = await ThreadService.getFollowingThread(res.locals.user.id);
       res.status(200).json(data);
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -90,16 +90,16 @@ export default class ThreadController {
       );
       res.status(201).json({ message: "Thread replied successfully", data });
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json({ message: error.message });
     }
   }
 
   static async getReplyThread(req: Request, res: Response) {
     try {
       const replies = await ReplyService.getReplies(req.params.id);
-      res.status(200).json({ message: "Thread replied successfully", replies });
+      res.status(200).json({ replies });
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -112,7 +112,7 @@ export default class ThreadController {
       );
       res.status(201).json({ data });
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json({ message: error.message });
     }
   }
 }
