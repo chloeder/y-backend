@@ -68,7 +68,12 @@ export default class ThreadController {
   }
 
   static async getFollowingThread(req: Request, res: Response) {
-    res.send("Get following thread");
+    try {
+      const data = await ThreadService.getFollowingThread(res.locals.user.id);
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
   }
 
   // Reply Thread CR

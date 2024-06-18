@@ -223,7 +223,7 @@ export default class ThreadService {
       return await prisma.thread.findMany({
         where: {
           userId: {
-            in: user.followings.map((following) => following.id),
+            in: user.followings.map((following) => following.targetId),
           },
         },
         select: {
