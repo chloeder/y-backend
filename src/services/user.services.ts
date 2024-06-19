@@ -1,5 +1,5 @@
-import { prisma } from "../../db/prisma";
-import { updateProfileSchema } from "../../validators/user.validator";
+import { prisma } from "../db/prisma";
+import { updateProfileSchema } from "../validators/user.validator";
 import { UserProfileDto } from "../dtos/user.dto";
 import { cloudinaryDelete, cloudinaryUpload } from "../utils/cloudinaryHandler";
 

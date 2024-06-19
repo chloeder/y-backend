@@ -1,5 +1,5 @@
-import { prisma } from "../../db/prisma";
-import { threadSchema } from "../../validators/thread.validators";
+import { prisma } from "../db/prisma";
+import { threadSchema } from "../validators/thread.validators";
 import { CreateThreadDto, UpdateThreadDto } from "../dtos/thread.dto";
 import { cloudinaryDelete, cloudinaryUpload } from "../utils/cloudinaryHandler";
 

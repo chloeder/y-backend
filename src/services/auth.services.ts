@@ -1,5 +1,5 @@
-import { prisma } from "../../db/prisma";
-import { loginSchema, registerSchema } from "../../validators/auth.validators";
+import { prisma } from "../db/prisma";
+import { loginSchema, registerSchema } from "../validators/auth.validators";
 import { LoginDTO, RegisterDTO } from "../dtos/auth.dto";
 import { comparePassword, hashPassword } from "../utils/bcryptHandler";
 

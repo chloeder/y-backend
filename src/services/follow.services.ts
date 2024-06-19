@@ -1,4 +1,4 @@
-import { prisma } from "../../db/prisma";
+import { prisma } from "../db/prisma";
 
 export default class FollowService {
   static async followUnfollowUser(targetId: string, ownerId: string) {

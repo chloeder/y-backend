@@ -1,5 +1,5 @@
-import { prisma } from "../../db/prisma";
-import { replySchema } from "../../validators/reply.validators";
+import { prisma } from "../db/prisma";
+import { replySchema } from "../validators/reply.validators";
 import { CreateReplyDto } from "../dtos/reply.dto";
 import { cloudinaryUpload } from "../utils/cloudinaryHandler";
 
