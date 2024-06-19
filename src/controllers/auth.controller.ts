@@ -65,7 +65,7 @@ export default class AuthController {
   public static async checkAuth(req: Request, res: Response) {
     // Check if user is authenticated
     try {
-      res.json(res.locals.user);
+      res.cookie("jwt", "", { maxAge: 0 });
     } catch (error) {
       if (error instanceof Error) {
         res.status(500).json({ message: error.message });
