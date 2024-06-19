@@ -22,6 +22,7 @@ export default class AuthController {
       res
         .cookie("accessToken", accessToken, {
           httpOnly: true,
+          path: "/",
           secure: true,
           sameSite: "none",
           maxAge: 1000 * 60 * 60 * 24, // 1 day
