@@ -37,7 +37,6 @@ export default class UserService {
         where: { id: userId },
         select: { followings: true },
       });
-      console.log(usersFollowedByMe);
 
       const users = await prisma.user.findMany({
         where: { id: { not: userId } },
@@ -150,7 +149,6 @@ export default class UserService {
         select: {
           followers: {
             select: {
-              targetId: true,
               follower: {
                 select: {
                   id: true,
@@ -161,13 +159,16 @@ export default class UserService {
               },
             },
           },
+          followings: true,
         },
       });
-
+      // return user;
       return user.followers.map((follower) => {
         return {
           ...follower.follower,
-          isFollowing: follower.targetId === userId,
+          isFollowing: user.followings.some(
+            (following) => following.targetId === follower.follower.id
+          ),
         };
       });
     } catch (error) {

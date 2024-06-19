@@ -219,7 +219,7 @@ export default class ThreadService {
       });
       if (!user) throw new Error("User not found");
 
-      return await prisma.thread.findMany({
+      const threads = await prisma.thread.findMany({
         where: {
           userId: {
             in: user.followings.map((following) => following.targetId),
@@ -244,6 +244,15 @@ export default class ThreadService {
         orderBy: {
           createdAt: "desc",
         },
+      });
+
+      return threads.map((thread) => {
+        return {
+          ...thread,
+          likes: thread.likes.length,
+          replies: thread.replies.length,
+          isLiked: thread.likes.some((like) => like.userId === userId),
+        };
       });
     } catch (error) {
       throw error;
