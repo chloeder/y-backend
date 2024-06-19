@@ -54,6 +54,10 @@ export default class AuthService {
         where: {
           email: dto.email,
         },
+        include: {
+          followers: true,
+          followings: true,
+        },
       });
       if (!user) throw new Error("Credentials are not found in our records");
 
@@ -64,7 +68,12 @@ export default class AuthService {
       );
       if (!isPasswordCorrect) throw new Error("Password is invalid");
 
-      return user;
+      const userLoggedIn = {
+        ...user,
+        followers: user.followers.length,
+        followings: user.followings.length,
+      };
+      return userLoggedIn;
     } catch (error) {
       throw error;
     }

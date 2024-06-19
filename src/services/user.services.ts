@@ -37,6 +37,7 @@ export default class UserService {
         where: { id: userId },
         select: { followings: true },
       });
+      console.log(usersFollowedByMe);
 
       const users = await prisma.user.findMany({
         where: { id: { not: userId } },
@@ -45,19 +46,21 @@ export default class UserService {
           fullName: true,
           username: true,
           photoProfile: true,
+          followings: {
+            select: {
+              followerId: true,
+            },
+          },
         },
-        take: 5,
       });
 
       const filteredUsers = users.filter((user) => {
         return !usersFollowedByMe.followings.some(
-          (following) => following.id === user.id
+          (following) => following.targetId === user.id
         );
       });
 
-      const suggestedUsers = filteredUsers.slice(0, 4);
-
-      return suggestedUsers;
+      return filteredUsers.slice(0, 5);
     } catch (error) {
       throw error;
     }
@@ -65,9 +68,7 @@ export default class UserService {
 
   static async getUsers(search: string) {
     try {
-      if (!search) throw new Error("Search query is required");
-
-      return await prisma.user.findMany({
+      const users = await prisma.user.findMany({
         where: {
           username: {
             contains: search,
@@ -80,7 +81,21 @@ export default class UserService {
           username: true,
           photoProfile: true,
           bio: true,
+          followings: {
+            select: {
+              followerId: true,
+            },
+          },
         },
+      });
+
+      return users.map((user) => {
+        return {
+          ...user,
+          isFollowing: user.followings.some(
+            (following) => following.followerId === user.id
+          ),
+        };
       });
     } catch (error) {
       throw error;
@@ -135,6 +150,7 @@ export default class UserService {
         select: {
           followers: {
             select: {
+              targetId: true,
               follower: {
                 select: {
                   id: true,
@@ -145,16 +161,13 @@ export default class UserService {
               },
             },
           },
-          followings: true,
         },
       });
 
       return user.followers.map((follower) => {
         return {
           ...follower.follower,
-          isFollowing: user.followings.some(
-            (following) => following.targetId === follower.follower.id
-          ),
+          isFollowing: follower.targetId === userId,
         };
       });
     } catch (error) {
@@ -169,6 +182,7 @@ export default class UserService {
         select: {
           followings: {
             select: {
+              followerId: true,
               target: {
                 select: {
                   id: true,
@@ -179,16 +193,13 @@ export default class UserService {
               },
             },
           },
-          followers: true,
         },
       });
-
+      // return user;
       return user.followings.map((following) => {
         return {
-          ...following,
-          isFollowing: user.followers.some(
-            (follower) => follower.followerId === following.target.id
-          ),
+          ...following.target,
+          isFollowing: following.followerId === userId,
         };
       });
     } catch (error) {
