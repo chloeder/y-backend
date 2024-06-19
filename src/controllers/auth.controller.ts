@@ -25,7 +25,6 @@ export default class AuthController {
           sameSite: "none",
           secure: true,
           maxAge: 1000 * 60 * 60 * 24, // 1 day
-          domain: "https://y-app-virid.vercel.app",
         })
         .status(200)
         .json({ message: "User logged in successfully", user, accessToken });
