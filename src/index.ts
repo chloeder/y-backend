@@ -14,10 +14,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(
     cors({
       credentials: true,
-      origin: [
-        "https://y-app-virid.vercel.app",
-        "https://y-app-steward-lumowas-projects.vercel.app",
-      ],
+      origin: ["https://y-app-virid.vercel.app"],
     })
   );
 }
