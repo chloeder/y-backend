@@ -13,6 +13,8 @@ const port = process.env.PORT || 3000;
 app.use(
   cors({
     origin: "https://y-app-virid.vercel.app",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 app.use(express.json());
