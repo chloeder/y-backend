@@ -55,7 +55,7 @@ export default class AuthController {
   }
   static async logout(req: Request, res: Response) {
     try {
-      res.clearCookie("jwt");
+      res.cookie("jwt", "", { maxAge: 0 });
       res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -65,7 +65,7 @@ export default class AuthController {
   public static async checkAuth(req: Request, res: Response) {
     // Check if user is authenticated
     try {
-      res.cookie("jwt", "", { maxAge: 0 });
+      res.json(res.locals.user);
     } catch (error) {
       if (error instanceof Error) {
         res.status(500).json({ message: error.message });
