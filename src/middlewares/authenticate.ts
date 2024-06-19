@@ -6,7 +6,7 @@ export const authenticate = (
   res: Response,
   next: NextFunction
 ) => {
-  const token: string = req.cookies.accessToken;
+  const token: string = req.cookies.jwt;
   try {
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
