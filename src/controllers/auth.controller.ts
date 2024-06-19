@@ -23,7 +23,7 @@ export default class AuthController {
         .cookie("accessToken", accessToken, {
           httpOnly: true,
           sameSite: "none",
-          secure: true,
+          secure: false,
           maxAge: 1000 * 60 * 60 * 24, // 1 day
         })
         .status(200)
