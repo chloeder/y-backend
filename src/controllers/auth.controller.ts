@@ -55,7 +55,7 @@ export default class AuthController {
   }
   static async logout(req: Request, res: Response) {
     try {
-      res.clearCookie("accessToken");
+      res.clearCookie("jwt");
       res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
       res.status(500).json({ message: error.message });
