@@ -21,6 +21,8 @@ export default class AuthController {
 
       res
         .cookie("accessToken", accessToken, {
+          domain: "https://y-app-virid.vercel.app",
+          path: "/",
           httpOnly: true,
           sameSite: "none",
           secure: false,
