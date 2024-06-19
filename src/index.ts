@@ -10,7 +10,15 @@ import userRouter from "./routes/v1/user.route";
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: [
+      "https://y-app-virid.vercel.app",
+      "https://y-app-steward-lumowas-projects.vercel.app",
+    ],
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
