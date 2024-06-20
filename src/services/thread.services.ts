@@ -291,6 +291,7 @@ export default class ThreadService {
           ...thread,
           likes: thread.likes.length,
           replies: thread.replies.length,
+          isLiked: thread.likes.some((like) => like.userId === userId),
         };
       });
     } catch (error) {
@@ -334,6 +335,7 @@ export default class ThreadService {
           ...thread,
           likes: thread.likes.length,
           replies: thread.replies.length,
+          isLiked: thread.likes.some((like) => like.userId === userId),
         };
       });
     } catch (error) {
