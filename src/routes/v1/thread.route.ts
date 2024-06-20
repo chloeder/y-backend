@@ -11,7 +11,7 @@ router
   .post(authenticate, upload.single("image"), ThreadController.createThread);
 
 router
-  .route("/following")
+  .route("/user/following")
   .get(authenticate, ThreadController.getFollowingThread);
 
 router
@@ -20,13 +20,19 @@ router
   .patch(authenticate, upload.single("image"), ThreadController.updateThread)
   .delete(authenticate, ThreadController.deleteThread);
 
+router.route("/user/:id").get(authenticate, ThreadController.getUserThread);
+router
+  .route("/user/replies/:id")
+  .get(authenticate, ThreadController.getThreadUserReply);
+
 router
   .route("/reply/:id")
-  .get(authenticate, ThreadController.getReplyThread)
   .post(authenticate, upload.single("image"), ThreadController.replyThread);
 
 router.route("/like/:id").post(authenticate, ThreadController.likeUnlikeThread);
 
-router.route("/likes/:id").get(authenticate, ThreadController.getLikedThread);
+router
+  .route("/user/likes/:id")
+  .get(authenticate, ThreadController.getLikedThread);
 
 export default router;

@@ -258,4 +258,86 @@ export default class ThreadService {
       throw error;
     }
   }
+
+  static async getUserThread(userId: string) {
+    try {
+      const threads = await prisma.thread.findMany({
+        where: {
+          userId,
+        },
+        select: {
+          id: true,
+          content: true,
+          image: true,
+          users: {
+            select: {
+              id: true,
+              username: true,
+              fullName: true,
+              photoProfile: true,
+            },
+          },
+          createdAt: true,
+          likes: true,
+          replies: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      return threads.map((thread) => {
+        return {
+          ...thread,
+          likes: thread.likes.length,
+          replies: thread.replies.length,
+        };
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getThreadUserReply(userId: string) {
+    try {
+      const threads = await prisma.thread.findMany({
+        where: {
+          replies: {
+            some: {
+              userId,
+            },
+          },
+        },
+        select: {
+          id: true,
+          content: true,
+          image: true,
+          users: {
+            select: {
+              id: true,
+              username: true,
+              fullName: true,
+              photoProfile: true,
+            },
+          },
+          createdAt: true,
+          likes: true,
+          replies: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      return threads.map((thread) => {
+        return {
+          ...thread,
+          likes: thread.likes.length,
+          replies: thread.replies.length,
+        };
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }

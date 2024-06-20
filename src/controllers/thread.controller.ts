@@ -79,6 +79,24 @@ export default class ThreadController {
     }
   }
 
+  static async getUserThread(req: Request, res: Response) {
+    try {
+      const data = await ThreadService.getUserThread(req.params.id);
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async getThreadUserReply(req: Request, res: Response) {
+    try {
+      const data = await ThreadService.getThreadUserReply(req.params.id);
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
   // Reply Thread CR
   static async replyThread(req: Request, res: Response) {
     try {
@@ -92,15 +110,6 @@ export default class ThreadController {
         req.params.id
       );
       res.status(201).json({ message: "Thread replied successfully", data });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  }
-
-  static async getReplyThread(req: Request, res: Response) {
-    try {
-      const replies = await ReplyService.getReplies(req.params.id);
-      res.status(200).json({ replies });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
