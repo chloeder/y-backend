@@ -27,6 +27,7 @@ router
 
 router
   .route("/reply/:id")
+  .get(authenticate, ThreadController.getReplyThread)
   .post(authenticate, upload.single("image"), ThreadController.replyThread);
 
 router.route("/like/:id").post(authenticate, ThreadController.likeUnlikeThread);

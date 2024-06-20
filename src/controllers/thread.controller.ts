@@ -115,6 +115,15 @@ export default class ThreadController {
     }
   }
 
+  static async getReplyThread(req: Request, res: Response) {
+    try {
+      const replies = await ReplyService.getReplies(req.params.id);
+      res.status(200).json({ replies });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
   // Like Thread
   static async likeUnlikeThread(req: Request, res: Response) {
     try {

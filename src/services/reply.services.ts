@@ -44,4 +44,35 @@ export default class ReplyService {
       throw error;
     }
   }
+
+  static async getReplies(threadId: string) {
+    try {
+      const thread = await prisma.thread.findUnique({
+        where: {
+          id: threadId,
+        },
+      });
+      if (!thread) throw new Error("Thread not found");
+
+      return await prisma.reply.findMany({
+        where: {
+          threadId,
+        },
+        include: {
+          users: {
+            select: {
+              fullName: true,
+              username: true,
+              photoProfile: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
