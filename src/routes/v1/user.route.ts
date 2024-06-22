@@ -13,7 +13,7 @@ router.route("/suggested").get(authenticate, UserController.getSuggestedUsers);
 router
   .route("/follow/:id")
   .post(authenticate, UserController.followUnfollowUser);
-router.route("/profile/update/:id").patch(
+router.route("/profile/update").patch(
   authenticate,
   upload.fields([
     { name: "photoProfile", maxCount: 1 },

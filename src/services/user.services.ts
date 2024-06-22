@@ -17,6 +17,7 @@ export default class UserService {
           email: true,
           bio: true,
           photoProfile: true,
+          coverImage: true,
           followers: true,
           followings: true,
           createdAt: true,
