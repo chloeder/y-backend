@@ -12,12 +12,14 @@ export default class UserService {
         },
         select: {
           id: true,
+          fullName: true,
           username: true,
           email: true,
           bio: true,
           photoProfile: true,
           followers: true,
           followings: true,
+          createdAt: true,
         },
       });
 
@@ -115,19 +117,15 @@ export default class UserService {
         if (user.photoProfile) {
           await cloudinaryDelete(user.photoProfile);
         }
-        const photoProfile = dto.photoProfile
-          ? await cloudinaryUpload(dto.photoProfile)
-          : null;
+        const photoProfile = await cloudinaryUpload(dto.photoProfile);
         dto.photoProfile = photoProfile?.secure_url;
       }
 
-      if (dto.photoProfile) {
+      if (dto.coverImage) {
         if (user.coverImage) {
           await cloudinaryDelete(user.coverImage);
         }
-        const coverImage = dto.coverImage
-          ? await cloudinaryUpload(dto.coverImage)
-          : null;
+        const coverImage = await cloudinaryUpload(dto.coverImage);
         dto.coverImage = coverImage?.secure_url;
       }
 
