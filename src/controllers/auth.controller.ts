@@ -24,7 +24,7 @@ export default class AuthController {
           httpOnly: true,
           path: "/",
           secure: true,
-          sameSite: "none",
+          sameSite: "lax",
           maxAge: 1000 * 60 * 60 * 24, // 1 day
         });
       }
