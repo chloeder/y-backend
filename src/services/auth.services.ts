@@ -114,7 +114,11 @@ export default class AuthService {
         email: user.email,
         subject: "Forgot Password",
         name: user.fullName,
-        resetLink: `http://localhost:5173/reset-password/${token}`,
+        resetLink: `${
+          process.env.NODE_ENV === "production"
+            ? process.env.CLIENT_URL
+            : "http://localhost:5173"
+        }/reset-password/${token}`,
       });
     } catch (error) {
       throw error;

@@ -10,23 +10,15 @@ import userRouter from "./routes/v1/user.route";
 const app = express();
 const port = process.env.PORT || 3000;
 
-if (process.env.NODE_ENV === "production") {
-  app.use(
-    cors({
-      credentials: true,
-      origin: ["https://y-app-virid.vercel.app"],
-    })
-  );
-}
-
-if (process.env.NODE_ENV === "development") {
-  app.use(
-    cors({
-      origin: "http://localhost:5173",
-      credentials: true,
-    })
-  );
-}
+app.use(
+  cors({
+    credentials: true,
+    origin:
+      process.env.NODE_ENV === "production"
+        ? process.env.CLIENT_URL
+        : "http://localhost:5173",
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
