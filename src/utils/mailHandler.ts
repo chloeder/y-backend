@@ -12,8 +12,8 @@ type Payload = {
 
 export async function sendEmail(payload: Payload) {
   // logo
-  const headerPath = path.join(__dirname, "../template/images/image-1.png");
-  const logoPath = path.join(__dirname, "../template/images/image-2.png");
+  const headerPath = path.join(__dirname, "../public/images/image-1.png");
+  const logoPath = path.join(__dirname, "../public/images/image-2.png");
 
   const header = fs.readFileSync(headerPath, "base64");
   const logo = fs.readFileSync(logoPath, "base64");
