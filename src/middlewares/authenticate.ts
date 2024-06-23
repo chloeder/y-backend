@@ -6,16 +6,17 @@ export const authenticate = (
   res: Response,
   next: NextFunction
 ) => {
-  const token: string = req.cookies.jwt;
-  try {
-    if (!token) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Unauthorized!" });
+  }
+  const token = authHeader.split(" ")[1];
 
-    const decoded = verifyToken(token);
-    res.locals.user = decoded;
+  try {
+    const payload = verifyToken(token);
+    res.locals.user = payload;
     next();
   } catch (error) {
-    res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized!" });
   }
 };

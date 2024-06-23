@@ -14,35 +14,9 @@ export default class AuthController {
 
   static async login(req: Request, res: Response) {
     try {
-      const user = await AuthService.login(req.body);
+      const data = await AuthService.login(req.body);
 
-      // access token
-      const accessToken = generateToken(user, "1d");
-
-      if (process.env.NODE_ENV === "production") {
-        res.cookie("jwt", accessToken, {
-          httpOnly: true,
-          path: "/",
-          secure: true,
-          sameSite: "lax",
-          maxAge: 1000 * 60 * 60 * 24, // 1 day
-        });
-      }
-
-      if (process.env.NODE_ENV === "development") {
-        res.cookie("jwt", accessToken, {
-          httpOnly: true,
-          path: "/",
-          domain: "localhost",
-          secure: false,
-          sameSite: "lax",
-          maxAge: 3600000, // 1 hour
-        });
-      }
-
-      res
-        .status(200)
-        .json({ message: "User logged in successfully", user, accessToken });
+      res.status(200).json({ message: "User logged in successfully", data });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

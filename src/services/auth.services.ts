@@ -75,10 +75,15 @@ export default class AuthService {
       );
       if (!isPasswordCorrect) throw new Error("Password is invalid");
 
+      // access token
+      const token = generateToken(user, "1d");
+      console.log(token);
+
       const userLoggedIn = {
         ...user,
         followers: user.followers.length,
         followings: user.followings.length,
+        token,
       };
       return userLoggedIn;
     } catch (error) {
