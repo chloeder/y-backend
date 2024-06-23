@@ -59,7 +59,7 @@ export default class AuthService {
       // Check if user exists in our database
       const user = await prisma.user.findUnique({
         where: {
-          email: dto.email,
+          username: dto.username,
         },
         include: {
           followers: true,

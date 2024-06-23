@@ -1,10 +1,9 @@
 import j from "joi";
 
 export const loginSchema = j.object({
-  email: j.string().email().required().messages({
-    "string.base": "Email must be a string",
-    "string.email": "Email must be a valid email",
-    "any.required": "Email is required",
+  username: j.string().required().messages({
+    "string.base": "Username must be a string",
+    "any.required": "Username is required",
   }),
   password: j.string().alphanum().required().messages({
     "string.base": "Password must be a string",
