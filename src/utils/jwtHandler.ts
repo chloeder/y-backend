@@ -7,10 +7,10 @@ type Payload = {
   fullName: string;
 };
 
-export const generateToken = (payload: Payload) => {
+export const generateToken = (payload: Payload, expired: string) => {
   delete payload.password;
   const token = jwt.sign(payload, process.env.JWT_SECRET!, {
-    expiresIn: "1d",
+    expiresIn: expired,
   });
   return token;
 };

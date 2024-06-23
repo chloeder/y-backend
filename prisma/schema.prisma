@@ -19,13 +19,28 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt
 
-  followers  Follow[] @relation("Followers")
-  followings Follow[] @relation("Following")
-  likes      Like[]
-  replies    Reply[]
-  threads    Thread[]
+  followers          Follow[]             @relation("Followers")
+  followings         Follow[]             @relation("Following")
+  likes              Like[]
+  replies            Reply[]
+  threads            Thread[]
+  PasswordResetToken PasswordResetToken[]
 
   @@map("users")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  isUsed    Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  userId String
+  users  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("passwordResetTokens")
 }
 
 model Thread {

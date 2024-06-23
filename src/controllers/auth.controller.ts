@@ -17,7 +17,7 @@ export default class AuthController {
       const user = await AuthService.login(req.body);
 
       // access token
-      const accessToken = generateToken(user);
+      const accessToken = generateToken(user, "1d");
 
       if (process.env.NODE_ENV === "production") {
         res.cookie("jwt", accessToken, {
@@ -53,6 +53,7 @@ export default class AuthController {
       res.status(500).json({ message: error.message });
     }
   }
+
   static async logout(req: Request, res: Response) {
     try {
       res.clearCookie("jwt", { sameSite: "none", secure: true });
@@ -62,7 +63,7 @@ export default class AuthController {
     }
   }
 
-  public static async checkAuth(req: Request, res: Response) {
+  static async checkAuth(req: Request, res: Response) {
     // Check if user is authenticated
     try {
       res.json(res.locals.user);
@@ -70,6 +71,24 @@ export default class AuthController {
       if (error instanceof Error) {
         res.status(500).json({ message: error.message });
       }
+    }
+  }
+
+  static async forgotPassword(req: Request, res: Response) {
+    try {
+      await AuthService.forgotPassword(req.body.email);
+      res.status(200).json({ message: "Password reset email sent" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async resetPassword(req: Request, res: Response) {
+    try {
+      await AuthService.resetPassword(req.body, req.params.token);
+      res.status(200).json({ message: "Password reset successful" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
   }
 }
