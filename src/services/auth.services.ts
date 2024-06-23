@@ -77,7 +77,6 @@ export default class AuthService {
 
       // access token
       const token = generateToken(user, "1d");
-      console.log(token);
 
       const userLoggedIn = {
         ...user,
