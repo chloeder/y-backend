@@ -33,7 +33,7 @@ export async function sendEmail(payload: Payload) {
     });
 
     await transporter.sendMail({
-      from: `"Y" <${process.env.EMAIL_USER}>`,
+      from: `"Y" <reply@gmail.com>`,
       to: `${payload.email}`,
       subject: `${payload.subject}`,
       html: mustache.render(emailTempalate, { payload }),
